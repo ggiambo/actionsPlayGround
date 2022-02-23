@@ -18,7 +18,6 @@ on:
 jobs:
   deploy:
     if: contains(['dev', 'preprod', 'prod'], ${{ github.event.inputs.stage}})
-#    runs-on: [ self-hosted ]
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.stage}}
     name: 'Deploy to ${{ github.event.inputs.stage}}'

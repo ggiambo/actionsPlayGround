@@ -1,0 +1,41 @@
+name: Test
+
+env:
+  ENV_VAR : 1
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: 'Stage (dev | preprod | prod)'
+        required: true
+        default: 'preprod'
+      version:
+        description: 'Version (e.g. "1.0.1")'
+        required: true
+        default: 'x.x.x'
+
+jobs:
+  deploy:
+    if: contains(['dev', 'preprod', 'prod'], ${{ github.event.inputs.stage}})
+    runs-on: [ self-hosted ]
+    environment: ${{ github.event.inputs.stage}}
+    name: 'Deploy to ${{ github.event.inputs.stage}}'
+    steps:
+      - name: 'Setup stage variables'
+        if: ${{ github.event.inputs.stage}} == 'dev'
+        run: 
+          echo "OPENSHIFT_TOKEN=token-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
+          echo "OPENSHIFT_NAMESPACE=namespace-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
+      - name: 'Setup stage variables'
+        if: ${{ github.event.inputs.stage}} == 'preprod'
+        run: |
+          echo "OPENSHIFT_TOKEN=token-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
+          echo "OPENSHIFT_NAMESPACE=namespace-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
+      - name: 'Setup stage variables'
+        if: ${{ github.event.inputs.stage}} == 'prod'
+        run: |
+          echo "OPENSHIFT_TOKEN=token-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
+          echo "OPENSHIFT_NAMESPACE=namespace-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
+      - name: 'output'
+        run: "echo ${{ env.OPENSHIFT_TOKEN }}"

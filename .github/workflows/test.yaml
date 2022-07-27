@@ -11,7 +11,7 @@ on:
         description: 'Stage'
         options:
           - dev
-          - proprod
+          - preprod
           - prod
         default: preprod
       version:

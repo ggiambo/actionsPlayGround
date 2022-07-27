@@ -7,9 +7,13 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: 'Stage (dev | preprod | prod)'
-        required: true
-        default: 'preprod'
+        type: choice
+        description: 'Stage'
+        options:
+          - dev
+          - proprod
+          - prod
+        default: preprod
       version:
         description: 'Version (e.g. "1.0.1")'
         required: true

@@ -27,19 +27,20 @@ jobs:
     name: 'Deploy to ${{ github.event.inputs.stage}}'
     steps:
       - name: 'Setup stage variables'
-        if: ${{ github.event.inputs.stage}} == 'dev'
-        run: 
-          echo "OPENSHIFT_TOKEN=token-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
-          echo "OPENSHIFT_NAMESPACE=namespace-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
-      - name: 'Setup stage variables'
-        if: ${{ github.event.inputs.stage}} == 'preprod'
         run: |
-          echo "OPENSHIFT_TOKEN=token-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
-          echo "OPENSHIFT_NAMESPACE=namespace-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
-      - name: 'Setup stage variables'
-        if: ${{ github.event.inputs.stage}} == 'prod'
-        run: |
-          echo "OPENSHIFT_TOKEN=token-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
-          echo "OPENSHIFT_NAMESPACE=namespace-${{ github.event.inputs.stage}}" >> $GITHUB_ENV
+          if [ '${{ github.event.inputs.stage }}' = 'dev' ]; then
+            echo "OPENSHIFT_NAMESPACE=bra-dev-axa-ch" >> $GITHUB_ENV
+            echo "VALUE_OPTION=./helm/bra-backend/values.dev.yaml" >> $GITHUB_ENV
+            echo "MONGODB_SECRET_NAME=MONGODB_PASSWORD_DEV" >> $GITHUB_ENV
+          elif [ '${{ github.event.inputs.stage }}' = 'preprod' ]; then
+            echo "OPENSHIFT_NAMESPACE=bra-preprod-axa-ch" >> $GITHUB_ENV
+            echo "VALUE_OPTION=./helm/bra-backend/values.preprod.yaml" >> $GITHUB_ENV
+            echo "MONGODB_SECRET_NAME=MONGODB_PASSWORD_PREPROD" >> $GITHUB_ENV
+          elif [ '${{ github.event.inputs.stage }}' = 'prod' ]; then 
+            echo "OPENSHIFT_NAMESPACE=bra-prod-axa-ch" >> $GITHUB_ENV
+            echo "VALUE_OPTION=./helm/bra-backend/values.prod.yaml" >> $GITHUB_ENV
+            echo "MONGODB_SECRET_NAME=MONGODB_PASSWORD_PROD" >> $GITHUB_ENV
+          fi
+
       - name: 'output'
-        run: "echo ${{ env.OPENSHIFT_TOKEN }}"
+        run: "echo ${{ secrets[env.MONGODB_SECRET_NAME]] }}"

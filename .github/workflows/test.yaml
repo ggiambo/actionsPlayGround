@@ -43,4 +43,8 @@ jobs:
           fi
 
       - name: 'output'
-        run: "echo ${{ secrets[env.MONGODB_SECRET_NAME] }}"
+        run: |
+          echo ${{ env.OPENSHIFT_NAMESPACE }}
+          echo ${{ env.VALUE_OPTION }}
+          echo ${{ env.MONGODB_SECRET_NAME }}
+          echo ${{ secrets[env.MONGODB_SECRET_NAME] }}

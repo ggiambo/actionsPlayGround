@@ -49,4 +49,4 @@ jobs:
           echo ${{ env.OPENSHIFT_NAMESPACE }}
           echo ${{ env.VALUE_OPTION }}
           echo ${{ env.MONGODB_SECRET_NAME }}
-          echo ${{ MONGODB_PASSWORD }}
+          echo ${{ env.MONGODB_PASSWORD }}

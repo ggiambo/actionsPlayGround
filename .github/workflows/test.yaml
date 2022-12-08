@@ -43,4 +43,4 @@ jobs:
           fi
 
       - name: 'output'
-        run: "echo ${{ secrets[env.MONGODB_SECRET_NAME]] }}"
+        run: "echo ${{ secrets[env.MONGODB_SECRET_NAME] }}"

@@ -1,4 +1,4 @@
-name: Create Release
+name: Create Release Notes
 
 on:
   workflow_dispatch:
@@ -14,43 +14,46 @@ on:
 
 jobs:
   create-release:
-    # Link to Action: https://github.com/marketplace/actions/checkout
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        # Loads full history which is required for tagging
-        fetch-depth: 0
+    name: 'Create Release Notes'
+    runs-on: [ self-hosted, linux, x64 ]
+    steps:
+      # Link to Action: https://github.com/marketplace/actions/checkout
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Loads full history which is required for tagging
+          fetch-depth: 0
 
-    # Link to Action: https://github.com/marketplace/actions/tag-exists-action
-    - name: 'Check if previous version tag exists'
-      uses: mukunku/tag-exists-action@v1.2.0
-      id: checkPrevVersionTag
-      with:
-        tag: v${{ github.event.inputs.prevTag }}
-      env:
-        GITHUB_TOKEN: ${{ env.GH_TOKEN }}
-    - if: ${{ steps.checkPrevVersionTag.outputs.exists == 'false' }}
-      run: |
-        echo "::error ::Version Tag ${{ github.event.inputs.prevTag }} not existing"
-        exit 1
+      # Link to Action: https://github.com/marketplace/actions/tag-exists-action
+      - name: 'Check if previous version tag exists'
+        uses: mukunku/tag-exists-action@v1.2.0
+        id: checkPrevVersionTag
+        with:
+          tag: v${{ github.event.inputs.prevTag }}
+        env:
+          GITHUB_TOKEN: ${{ env.GH_TOKEN }}
+      - if: ${{ steps.checkPrevVersionTag.outputs.exists == 'false' }}
+        run: |
+          echo "::error ::Version Tag ${{ github.event.inputs.prevTag }} not existing"
+          exit 1
 
-    # Link to Action: https://github.com/marketplace/actions/tag-exists-action
-    - name: 'Check if previous version tag exists'
-      uses: mukunku/tag-exists-action@v1.2.0
-      id: checkLastVersionTag
-      with:
-        tag: v${{ github.event.inputs.lastTag }}
-      env:
-        GITHUB_TOKEN: ${{ env.GH_TOKEN }}
-    - if: ${{ steps.checkLastVersionTag.outputs.exists == 'false' }}
-      run: |
-        echo "::error ::Version Tag ${{ github.event.inputs.prevTag }} not existing"
-        exit 1
+      # Link to Action: https://github.com/marketplace/actions/tag-exists-action
+      - name: 'Check if previous version tag exists'
+        uses: mukunku/tag-exists-action@v1.2.0
+        id: checkLastVersionTag
+        with:
+          tag: v${{ github.event.inputs.lastTag }}
+        env:
+          GITHUB_TOKEN: ${{ env.GH_TOKEN }}
+      - if: ${{ steps.checkLastVersionTag.outputs.exists == 'false' }}
+        run: |
+          echo "::error ::Version Tag ${{ github.event.inputs.prevTag }} not existing"
+          exit 1
 
-    - name: Create Release
-      uses: aaiezza/create-release@master
-      id: create_release
-      with:
-        tag: ${{ github.event.inputs.lastTag }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        uses: aaiezza/create-release@master
+        id: create_release
+        with:
+          tag: ${{ github.event.inputs.lastTag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

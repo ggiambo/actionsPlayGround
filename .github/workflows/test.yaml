@@ -60,7 +60,6 @@ jobs:
           toTag: v${{ github.event.inputs.lastTag }}
 
       - name: Create Release
-        uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
+        uses: softprops/action-gh-release@v1
         with:
           body: ${{steps.github_release.outputs.changelog}}
-          tag: v${{ github.event.inputs.lastTag }}

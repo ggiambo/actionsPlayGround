@@ -15,7 +15,7 @@ on:
 jobs:
   create-release:
     name: 'Create Release Notes'
-    runs-on: [ self-hosted, linux, x64 ]
+    runs-on: ubuntu-latest
     steps:
       # Link to Action: https://github.com/marketplace/actions/checkout
       - name: Checkout

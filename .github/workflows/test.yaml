@@ -1,52 +1,56 @@
-name: Test
-
-env:
-  ENV_VAR : 1
+name: Create Release
 
 on:
   workflow_dispatch:
     inputs:
-      stage:
-        type: choice
-        description: 'Stage'
-        options:
-          - dev
-          - preprod
-          - prod
-        default: preprod
-      version:
-        description: 'Version (e.g. "1.0.1")'
+      prevTag:
+        description: 'The previous version (e.g. "v.0.4.7)'
+        required: true
+        default: 'x.x.x'
+      lastTag:
+        description: 'The last tag version (e.g. "v.0.4.33)'
         required: true
         default: 'x.x.x'
 
 jobs:
-  deploy:
-    if: contains(['dev', 'preprod', 'prod'], ${{ github.event.inputs.stage}})
-    runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.stage}}
-    name: 'Deploy to ${{ github.event.inputs.stage}}'
-    steps:
-      - name: 'Setup stage variables'
-        run: |
-          if [ '${{ github.event.inputs.stage }}' = 'dev' ]; then
-            echo "OPENSHIFT_NAMESPACE=bra-dev-axa-ch" >> $GITHUB_ENV
-            echo "VALUE_OPTION=./helm/bra-backend/values.dev.yaml" >> $GITHUB_ENV
-            echo "MONGODB_SECRET_NAME=MONGODB_PASSWORD_DEV" >> $GITHUB_ENV
-          elif [ '${{ github.event.inputs.stage }}' = 'preprod' ]; then
-            echo "OPENSHIFT_NAMESPACE=bra-preprod-axa-ch" >> $GITHUB_ENV
-            echo "VALUE_OPTION=./helm/bra-backend/values.preprod.yaml" >> $GITHUB_ENV
-            echo "MONGODB_SECRET_NAME=MONGODB_PASSWORD_PREPROD" >> $GITHUB_ENV
-          elif [ '${{ github.event.inputs.stage }}' = 'prod' ]; then 
-            echo "OPENSHIFT_NAMESPACE=bra-prod-axa-ch" >> $GITHUB_ENV
-            echo "VALUE_OPTION=./helm/bra-backend/values.prod.yaml" >> $GITHUB_ENV
-            echo "MONGODB_SECRET_NAME=MONGODB_PASSWORD_PROD" >> $GITHUB_ENV
-          fi
+  create-release:
+    # Link to Action: https://github.com/marketplace/actions/checkout
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        # Loads full history which is required for tagging
+        fetch-depth: 0
 
-      - name: 'output'
-        env:
-          MONGODB_PASSWORD: ${{ secrets[env.MONGODB_SECRET_NAME] }}
-        run: |
-          echo ${{ env.OPENSHIFT_NAMESPACE }}
-          echo ${{ env.VALUE_OPTION }}
-          echo ${{ env.MONGODB_SECRET_NAME }}
-          echo ${{ env.MONGODB_PASSWORD }}
+    # Link to Action: https://github.com/marketplace/actions/tag-exists-action
+    - name: 'Check if previous version tag exists'
+      uses: mukunku/tag-exists-action@v1.2.0
+      id: checkPrevVersionTag
+      with:
+        tag: v${{ github.event.inputs.prevTag }}
+      env:
+        GITHUB_TOKEN: ${{ env.GH_TOKEN }}
+    - if: ${{ steps.checkPrevVersionTag.outputs.exists == 'false' }}
+      run: |
+        echo "::error ::Version Tag ${{ github.event.inputs.prevTag }} not existing"
+        exit 1
+
+    # Link to Action: https://github.com/marketplace/actions/tag-exists-action
+    - name: 'Check if previous version tag exists'
+      uses: mukunku/tag-exists-action@v1.2.0
+      id: checkLastVersionTag
+      with:
+        tag: v${{ github.event.inputs.lastTag }}
+      env:
+        GITHUB_TOKEN: ${{ env.GH_TOKEN }}
+    - if: ${{ steps.checkLastVersionTag.outputs.exists == 'false' }}
+      run: |
+        echo "::error ::Version Tag ${{ github.event.inputs.prevTag }} not existing"
+        exit 1
+
+    - name: Create Release
+      uses: aaiezza/create-release@master
+      id: create_release
+      with:
+        tag: ${{ github.event.inputs.lastTag }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

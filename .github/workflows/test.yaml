@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       prevTag:
-        description: 'The previous version (e.g. "v.0.4.7)'
+        description: 'The previous version (e.g. "0.4.7)'
         required: true
         default: 'x.x.x'
       lastTag:
-        description: 'The last tag version (e.g. "v.0.4.33)'
+        description: 'The last tag version (e.g. "0.4.33)'
         required: true
         default: 'x.x.x'
 

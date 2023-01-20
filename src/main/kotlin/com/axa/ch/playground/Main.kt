@@ -6,7 +6,7 @@ fun main() {
 
 class Main {
     fun start() {
-        (1..10).forEach {
+        (0..9).forEach {
             println("$it: Here we are again now place your bets")
         }
     }

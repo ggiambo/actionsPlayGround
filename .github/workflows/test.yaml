@@ -47,23 +47,19 @@ jobs:
           GITHUB_TOKEN: ${{ env.GH_TOKEN }}
       - if: ${{ steps.checkLastVersionTag.outputs.exists == 'false' }}
         run: |
-          echo "::error ::Version Tag ${{ github.event.inputs.prevTag }} not existing"
+          echo "::error ::Version Tag ${{ github.event.inputs.lastTag }} not existing"
           exit 1
 
-      - name: Create Release
-        uses: aaiezza/create-release@master
-        id: create_release
-        with:
-          tag: ${{ github.event.inputs.lastTag }}
+      - name: Build Changelog
+        id: github_release
+        uses: mikepenz/release-changelog-builder-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          fromTag: ${{ github.event.inputs.prevTag }}
+          toTag: ${{ github.event.inputs.lastTag }}
 
-      - name: Upload Jar
-        uses: actions/upload-release-asset@v1.0.2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: target/${{ needs.version.outputs.jar-name }}
-          asset_name: ${{ needs.version.outputs.release-jar-name }}
-          asset_content_type: application/java-archive
+          body: ${{steps.github_release.outputs.changelog}}

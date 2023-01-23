@@ -73,7 +73,7 @@ jobs:
                   "rules": {
                     "pattern": "BADZ-"
                   }
-                },
+                }
               ],
               "pr_template": "#{{TITLE}}\n",
             }

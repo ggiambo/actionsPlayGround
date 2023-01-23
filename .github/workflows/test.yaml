@@ -73,7 +73,6 @@ jobs:
             Release ${{ env.toTag }}
             **Full Changelog**: ${{ env.GITHUB_SERVER_URL }}/${{ env.GITHUB_REPOSITORY }}/compare/${{ env.fromTag }}...${{ env.toTag }}
             **Full Changelog**: ${{ GITHUB_SERVER_URL }}/${{ GITHUB_REPOSITORY }}/compare/${{ env.fromTag }}...${{ env.toTag }}
-            **Full Changelog**: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/compare/${{ env.fromTag }}...${{ env.toTag }}
             **Changelog**: 
             ```
             ${{ steps.buildChangelog.outputs.changelog }}

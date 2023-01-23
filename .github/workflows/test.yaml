@@ -62,6 +62,7 @@ jobs:
         with:
           fromTag: "${{ env.fromTag }}"
           toTag: "${{ env.toTag }}"
+          commitMode: "true"
           configurationJson: |
             {
               "template": "Changelog: #{{CHANGELOG}}\n\nUncategorized\n\n#{{UNCATEGORIZED}}\n",

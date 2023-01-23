@@ -38,7 +38,7 @@ jobs:
           exit 1
 
       # Link to Action: https://github.com/marketplace/actions/tag-exists-action
-      - name: 'Check if previous version tag exists'
+      - name: 'Check if last version tag exists'
         uses: mukunku/tag-exists-action@v1.2.0
         id: checkLastVersionTag
         with:
@@ -50,6 +50,7 @@ jobs:
           echo "::error ::Version Tag ${{ github.event.inputs.lastTag }} not existing"
           exit 1
 
+      # Link to Action: https://github.com/marketplace/actions/release-changelog-builder
       - name: Build Changelog
         id: github_release
         uses: mikepenz/release-changelog-builder-action@v3
@@ -59,8 +60,10 @@ jobs:
           fromTag: v${{ github.event.inputs.prevTag }}
           toTag: v${{ github.event.inputs.lastTag }}
 
+      # Link to Action: https://github.com/marketplace/actions/gh-release
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          body: ${{steps.github_release.outputs.changelog}}
+          body: '**Full Changelog**: https://github.axa.com/avengers/bra-backend/compare/v${{ github.event.inputs.prevTag }}...v${{ github.event.inputs.lastTag }}'
+          name: Production release v${{ github.event.inputs.lastTag }}
           tag_name: v${{ github.event.inputs.lastTag }}

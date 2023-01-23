@@ -75,7 +75,7 @@ jobs:
                   }
                 }
               ],
-              "pr_template": "#{{TITLE}}\n",
+              "pr_template": "#{{TITLE}}\n"
             }
 
       # Link to Action: https://github.com/marketplace/actions/gh-release

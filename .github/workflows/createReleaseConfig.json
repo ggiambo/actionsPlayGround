@@ -7,11 +7,10 @@
         {
           "pattern": "BADZ-",
           "flags": "gi",
-          "on_property": "title",
-          "method": "match"
+          "on_property": "title"
         }
       ]
     }
   ],
-  "pr_template": "${{TITLE}}"
+  "pr_template": "- ${{TITLE}}"
 }

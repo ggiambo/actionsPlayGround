@@ -62,8 +62,6 @@ jobs:
         with:
           fromTag: "${{ env.fromTag }}"
           toTag: "${{ env.toTag }}"
-          commitMode: "true"
-          ignorePreReleases: "false"
           configurationJson: |
             {
               "template": "Changelog: #{{CHANGELOG}}\n\nUncategorized\n\n#{{UNCATEGORIZED}}\n",
@@ -73,7 +71,7 @@ jobs:
                   "rules": [
                     {
                       "pattern": "BADZ-",
-                      "flags": "gu",
+                      "flags": "gi",
                       "on_property": "title",
                       "method": "match"
                     }

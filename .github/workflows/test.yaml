@@ -84,25 +84,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body: |
-            changelog: ${{ steps.buildChangelog.outputs.changelog }}
-            outputs: ${{ steps.buildChangelog.outputs }}
-            buildChangelog: ${{ steps.buildChangelog }}
             Release ${{ env.toTag }}
             **Full Changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${{ env.fromTag }}...${{ env.toTag }}
             **Changelog**: 
-            ```
             ${{ steps.buildChangelog.outputs.changelog }}
-            ```
-            **changelog**: ${{ steps.buildChangelog.outputs.changelog }}
-            **pull_requests**: ${{ steps.buildChangelog.outputs.pull_requests }}
-            **owner**: ${{ steps.buildChangelog.outputs.owner }}
-            **repo**: ${{ steps.buildChangelog.outputs.repo }}
-            **fromTag**: ${{ steps.buildChangelog.outputs.fromTag }}
-            **toTag**: ${{ steps.buildChangelog.outputs.toTag }}
-            **failed**: ${{ steps.buildChangelog.outputs.failed }}
-            **categorized_prs**: ${{ steps.buildChangelog.outputs.categorized_prs }}
-            **uncategorized_prs**: ${{ steps.buildChangelog.outputs.uncategorized_prs }}
-            **open_prs**: ${{ steps.buildChangelog.outputs.open_prs }}
-
           name: Production release ${{ env.toTag }}
           tag_name: ${{ env.toTag }}

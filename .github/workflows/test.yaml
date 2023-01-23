@@ -75,5 +75,7 @@ jobs:
             ```
             ${{ steps.buildChangelog.outputs.changelog }}
             ```
+            **Commits": ${{ steps.buildChangelog.outputs.commits }}
+            **PRs": ${{ steps.buildChangelog.outputs.pull_requests }}
           name: Production release ${{ env.toTag }}
           tag_name: ${{ env.toTag }}

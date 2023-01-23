@@ -69,7 +69,7 @@ jobs:
               "categories": [
                 {
                   "title": "JIRA Commits",
-                  "labels: [],
+                  "labels": [],
                   "rules": [
                     {
                       "pattern": "BADZ-",

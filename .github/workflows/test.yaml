@@ -63,6 +63,7 @@ jobs:
           fromTag: "${{ env.fromTag }}"
           toTag: "${{ env.toTag }}"
           commitMode: "true"
+          ignorePreReleases: "false"
 
       # Link to Action: https://github.com/marketplace/actions/gh-release
       - name: Create Release
@@ -75,7 +76,9 @@ jobs:
             ```
             ${{ steps.buildChangelog.outputs.changelog }}
             ```
-            **Commits": ${{ steps.buildChangelog.outputs.commits }}
-            **PRs": ${{ steps.buildChangelog.outputs.pull_requests }}
+            **Commits**: ${{ steps.buildChangelog.outputs.commits }}
+            **PRs**: ${{ steps.buildChangelog.outputs.pull_requests }}
+            **CL**: ${{ steps.buildChangelog.outputs.changelog }}
+            
           name: Production release ${{ env.toTag }}
           tag_name: ${{ env.toTag }}

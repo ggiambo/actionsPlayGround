@@ -64,6 +64,7 @@ jobs:
           toTag: "${{ env.toTag }}"
           commitMode: "true"
           ignorePreReleases: "false"
+          configuration: "configuration.json"
 
       # Link to Action: https://github.com/marketplace/actions/gh-release
       - name: Create Release

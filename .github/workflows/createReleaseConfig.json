@@ -1,0 +1,17 @@
+{
+  "template": "${{CHANGELOG}}",
+  "categories": [
+    {
+      "labels": [],
+      "rules": [
+        {
+          "pattern": "BADZ-",
+          "flags": "gi",
+          "on_property": "title",
+          "method": "match"
+        }
+      ]
+    }
+  ],
+  "pr_template": "${{TITLE}}"
+}

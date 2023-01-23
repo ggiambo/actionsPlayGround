@@ -63,25 +63,7 @@ jobs:
           fromTag: "${{ env.fromTag }}"
           toTag: "${{ env.toTag }}"
           commitMode: "true"
-          configurationJson: |
-            {
-              "template": "#{{CHANGELOG}}",
-              "categories": [
-                {
-                  "title": "JIRA Commits",
-                  "labels": [],
-                  "rules": [
-                    {
-                      "pattern": "BADZ-",
-                      "flags": "gi",
-                      "on_property": "title",
-                      "method": "match"
-                    }
-                  ]
-                }
-              ],
-              "pr_template": "#{{TITLE}}\n"
-            }
+          configuration: "./.github/workflows/createReleaseConfig.json"
 
       # Link to Action: https://github.com/marketplace/actions/gh-release
       - name: Create Release

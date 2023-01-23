@@ -55,7 +55,7 @@ jobs:
 
       # Link to Action: https://github.com/marketplace/actions/release-changelog-builder
       - name: Build Changelog
-        id: github_release
+        id: buildChangelog
         uses: mikepenz/release-changelog-builder-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -68,7 +68,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body: |
-            echo "Release ${{ env.toTag }}"
-            echo "**Full Changelog**: https://github.com/ggiambo/actionsPlayGround/compare/${{ env.fromTag }}...${{ env.toTag }}"
+            Release ${{ env.toTag }}
+            **Full Changelog**: https://github.com/ggiambo/actionsPlayGround/compare/${{ env.fromTag }}...${{ env.toTag }}
+            **Changelog**: ${{ steps.buildChangelog.outputs.changeLog }}
           name: Production release ${{ env.toTag }}
           tag_name: ${{ env.toTag }}

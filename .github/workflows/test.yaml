@@ -3,12 +3,12 @@ name: Create Release Notes
 on:
   workflow_dispatch:
     inputs:
-      prevTag:
-        description: 'The previous version (e.g. "0.4.7)'
+      fromTag:
+        description: 'The from-tag version (e.g. "0.4.7)'
         required: true
         default: 'x.x.x'
-      lastTag:
-        description: 'The last tag version (e.g. "0.4.33)'
+      toTag:
+        description: 'The to-tag version (e.g. "0.4.33)'
         required: true
         default: 'x.x.x'
 
@@ -16,6 +16,9 @@ jobs:
   create-release:
     name: 'Create Release Notes'
     runs-on: ubuntu-latest
+    env:
+      fromTag: v${{ github.event.inputs.fromTag }}
+      toTag: v${{ github.event.inputs.toTag }}
     steps:
       # Link to Action: https://github.com/marketplace/actions/checkout
       - name: Checkout
@@ -25,29 +28,29 @@ jobs:
           fetch-depth: 0
 
       # Link to Action: https://github.com/marketplace/actions/tag-exists-action
-      - name: 'Check if previous version tag exists'
+      - name: 'Check if from-tag exists'
         uses: mukunku/tag-exists-action@v1.2.0
-        id: checkPrevVersionTag
+        id: checkFromTag
         with:
-          tag: v${{ github.event.inputs.prevTag }}
+          tag: ${{ fromTag }}
         env:
           GITHUB_TOKEN: ${{ env.GH_TOKEN }}
-      - if: ${{ steps.checkPrevVersionTag.outputs.exists == 'false' }}
+      - if: ${{ steps.checkFromTag.outputs.exists == 'false' }}
         run: |
-          echo "::error ::Version Tag ${{ github.event.inputs.prevTag }} not existing"
+          echo "::error ::Version Tag ${{ fromTag }} does not exist"
           exit 1
 
       # Link to Action: https://github.com/marketplace/actions/tag-exists-action
-      - name: 'Check if last version tag exists'
+      - name: 'Check if to-tag exists'
         uses: mukunku/tag-exists-action@v1.2.0
-        id: checkLastVersionTag
+        id: checkToTag
         with:
-          tag: v${{ github.event.inputs.lastTag }}
+          tag: ${{ toTag }}
         env:
           GITHUB_TOKEN: ${{ env.GH_TOKEN }}
-      - if: ${{ steps.checkLastVersionTag.outputs.exists == 'false' }}
+      - if: ${{ steps.checkToTag.outputs.exists == 'false' }}
         run: |
-          echo "::error ::Version Tag ${{ github.event.inputs.lastTag }} not existing"
+          echo "::error ::Version Tag ${{ toTag }} does not exist"
           exit 1
 
       # Link to Action: https://github.com/marketplace/actions/release-changelog-builder
@@ -57,13 +60,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          fromTag: v${{ github.event.inputs.prevTag }}
-          toTag: v${{ github.event.inputs.lastTag }}
+          fromTag: ${{ fromTag }}
+          toTag: ${{ toTag }}
 
       # Link to Action: https://github.com/marketplace/actions/gh-release
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          body: '**Full Changelog**: https://github.axa.com/avengers/bra-backend/compare/v${{ github.event.inputs.prevTag }}...v${{ github.event.inputs.lastTag }}'
-          name: Production release v${{ github.event.inputs.lastTag }}
-          tag_name: v${{ github.event.inputs.lastTag }}
+          body: '**Full Changelog**: https://github.com/ggiambo/actionsPlayGround/compare/${{ fromTag }}...${{ toTag }}'
+          name: Production release ${{ toTag }}
+          tag_name: ${{ toTag }}

@@ -69,7 +69,10 @@ jobs:
         with:
           body: |
             Release ${{ env.toTag }}
-            **Full Changelog**: https://github.com/ggiambo/actionsPlayGround/compare/${{ env.fromTag }}...${{ env.toTag }}
-            **Changelog**: ${{ steps.buildChangelog.outputs.changeLog }}
+            **Full Changelog**: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${{ env.fromTag }}...${{ env.toTag }}
+            **Changelog**: 
+            ```
+            ${{ steps.buildChangelog.outputs.changeLog }}
+            ```
           name: Production release ${{ env.toTag }}
           tag_name: ${{ env.toTag }}

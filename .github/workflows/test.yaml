@@ -63,15 +63,15 @@ jobs:
           fromTag: "${{ env.fromTag }}"
           toTag: "${{ env.toTag }}"
           commitMode: "true"
-          configuration: "./.github/workflows/createReleaseConfig.json"
+          configuration: ".github/workflows/createReleaseConfig.json"
 
       # Link to Action: https://github.com/marketplace/actions/gh-release
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           body: |
-            Release ${{ env.toTag }}
-            **Full Changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${{ env.fromTag }}...${{ env.toTag }}
+            # Release ${{ env.toTag }}
+            **Full Changelog** ${{ github.server_url }}/${{ github.repository }}/compare/${{ env.fromTag }}...${{ env.toTag }}
             ```
             ${{ steps.buildChangelog.outputs.changelog }}
             ```

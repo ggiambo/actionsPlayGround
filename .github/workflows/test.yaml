@@ -32,12 +32,12 @@ jobs:
         uses: mukunku/tag-exists-action@v1.2.0
         id: checkFromTag
         with:
-          tag: ${{ fromTag }}
+          tag: ${{ env.fromTag }}
         env:
           GITHUB_TOKEN: ${{ env.GH_TOKEN }}
       - if: ${{ steps.checkFromTag.outputs.exists == 'false' }}
         run: |
-          echo "::error ::Version Tag ${{ fromTag }} does not exist"
+          echo "::error ::Version Tag ${{ env.fromTag }} does not exist"
           exit 1
 
       # Link to Action: https://github.com/marketplace/actions/tag-exists-action
@@ -45,12 +45,12 @@ jobs:
         uses: mukunku/tag-exists-action@v1.2.0
         id: checkToTag
         with:
-          tag: ${{ toTag }}
+          tag: ${{ env.toTag }}
         env:
           GITHUB_TOKEN: ${{ env.GH_TOKEN }}
       - if: ${{ steps.checkToTag.outputs.exists == 'false' }}
         run: |
-          echo "::error ::Version Tag ${{ toTag }} does not exist"
+          echo "::error ::Version Tag ${{ env.toTag }} does not exist"
           exit 1
 
       # Link to Action: https://github.com/marketplace/actions/release-changelog-builder
@@ -60,13 +60,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          fromTag: ${{ fromTag }}
-          toTag: ${{ toTag }}
+          fromTag: ${{ env.fromTag }}
+          toTag: ${{ env.toTag }}
 
       # Link to Action: https://github.com/marketplace/actions/gh-release
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          body: '**Full Changelog**: https://github.com/ggiambo/actionsPlayGround/compare/${{ fromTag }}...${{ toTag }}'
-          name: Production release ${{ toTag }}
-          tag_name: ${{ toTag }}
+          body: '**Full Changelog**: https://github.com/ggiambo/actionsPlayGround/compare/${{ env.fromTag }}...${{ env.toTag }}'
+          name: Production release ${{ env.toTag }}
+          tag_name: ${{ env.toTag }}

@@ -67,6 +67,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          body: '**Full Changelog**: https://github.com/ggiambo/actionsPlayGround/compare/${{ env.fromTag }}...${{ env.toTag }}'
+          body: |
+            echo "Release ${{ env.toTag }}"
+            echo "**Full Changelog**: https://github.com/ggiambo/actionsPlayGround/compare/${{ env.fromTag }}...${{ env.toTag }}"
           name: Production release ${{ env.toTag }}
           tag_name: ${{ env.toTag }}

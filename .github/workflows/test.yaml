@@ -69,14 +69,13 @@ jobs:
               "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
               "categories": [
                 {
-                    "title": "## 💬 Other",
-                    "labels": ["other"]
+                  "title": "JIRA Commits",
+                  "rules": {
+                    "pattern": "BADZ-"
+                  }
                 },
-                {
-                    "title": "## 📦 Dependencies",
-                    "labels": ["dependencies"]
-                }
-              ]
+              ],
+              "pr_template": "#{{TITLE}}\n",
             }
 
       # Link to Action: https://github.com/marketplace/actions/gh-release

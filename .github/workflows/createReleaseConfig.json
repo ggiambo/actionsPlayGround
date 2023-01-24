@@ -3,6 +3,7 @@
   "categories": [
     {
       "labels": [],
+      "title": "titolo",
       "rules": [
         {
           "pattern": "BADZ-",

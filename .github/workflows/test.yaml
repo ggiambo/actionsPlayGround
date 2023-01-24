@@ -64,6 +64,9 @@ jobs:
           toTag: "${{ env.toTag }}"
           commitMode: "true"
           configuration: ".github/workflows/createReleaseConfig.json"
+          
+      - name: debug
+        run: echo "**${{ steps.buildChangelog.outputs.changelog }}**"
 
       # Link to Action: https://github.com/marketplace/actions/gh-release
       - name: Create Release
